@@ -1,0 +1,72 @@
+CREATE table REGIONS(
+    region_id int PRIMARY KEY, 
+    region_name varchar(50)
+);
+	
+	
+CREATE table COUNTRIES(
+    country_id int PRIMARY KEY, 
+    country_name varchar(50),
+    region_id int
+);
+	
+
+CREATE table LOCATIONS(
+    location_id int PRIMARY KEY, 
+    street_address varchar(100),
+    postal_code varchar(100),
+    city varchar(50),
+    state_province varchar(100),
+    country_id int
+);
+
+
+CREATE table DEPARTMENTS(
+    department_id int PRIMARY KEY, 
+    department_name varchar(50),
+    manager_id int,
+    location_id int
+);
+
+
+CREATE table EMPLOYEES(
+    employee_id int PRIMARY KEY, 
+    first_name varchar(50),
+    last_name varchar(50),
+    email varchar(100),
+    phone_number varchar(10)    
+);
+
+
+ALTER table EMPLOYEES
+    ADD(
+    hire_date date, 
+    job_id int,
+	salary number,
+	commission_pct number,
+	manager_id int,
+	department_id int
+);
+
+
+CREATE table JOB_HISTORY(
+    employee_id int, 
+    start_date date,
+    end_date date,
+    job_id int,
+    department_id int,
+    CONSTRAINT PK_JOB_HISTORY PRIMARY KEY (employee_id, start_date),
+    CONSTRAINT FK_JOB_HISTORY_DEPARTMENT FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id)
+);
+
+
+CREATE table JOBS(
+    job_id int PRIMARY KEY,
+    job_title varchar(50),
+    min_salary number,
+    max_salary number,
+    CONSTRAINT CHK_JOB CHECK (min_salary + 2000 < max_salary)
+);
+
+
+
