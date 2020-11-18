@@ -28,3 +28,29 @@ SELECT last_name, salary as wynagrodzenie
 FROM EMPLOYEES 
 WHERE (department_id = 20 OR department_id = 50) AND salary BETWEEN 2000 and 7000
 ORDER BY last_name;
+
+2.
+SELECT hire_date, last_name
+FROM EMPLOYEES
+WHERE MANAGER_ID IS NOT NULL 
+AND hire_date >= '2005-1-1'
+ORDER BY hire_date;
+
+3.
+SELECT  (first_name || ' ' || last_name) as fullname, salary, phone_number
+FROM EMPLOYEES
+WHERE last_name like '__e%'
+ORDER BY fullname DESC, salary ASC;
+
+4.
+Select months, salary,
+(CASE 
+    WHEN months > 200 THEN  0.3
+    WHEN months > 150 THEN  0.2
+    ELSE  0.1
+END * salary) as wysokosc_dodatku
+FROM
+    (SELECT  first_name, last_name, salary, MONTHS_BETWEEN(CURRENT_DATE, hire_date)as months
+    FROM EMPLOYEES) 
+ORDER BY months
+
