@@ -54,3 +54,48 @@ FROM
     FROM EMPLOYEES) 
 ORDER BY months
 
+5.
+SELECT j.job_title, j.min_salary, SUM(e.salary) as suma,  ROUND(AVG(e.salary), 0) as srednia 
+FROM EMPLOYEES e
+JOIN JOBS j
+ON j.job_id = e.job_id
+GROUP BY j.job_title, j.min_salary
+HAVING j.min_salary > 5000
+
+6.
+SELECT e.last_name, e.department_id, d.department_name, e.job_id
+FROM EMPLOYEES e
+JOIN DEPARTMENTS d
+ON e.department_id = d.department_id
+JOIN locations l
+ON l.location_id = d.location_id
+WHERE l.city like 'Toronto'
+
+8.
+SELECT d.department_id, d.department_name
+FROM DEPARTMENTS d
+WHERE NOT EXISTS (SELECT * FROM employees where department_id = d.department_id)
+
+10.
+SELECT e.first_name, e.last_name, d.department_name, e.salary,
+    (select  grade from job_grades WHERE min_salary <= salary AND max_salary >= salary AND ROWNUM <= 1) as grade
+FROM EMPLOYEES e
+JOIN DEPARTMENTS d
+ON e.department_id = d.department_id
+
+11.
+SELECT e.first_name, e.last_name, e.salary
+FROM EMPLOYEES e
+WHERE e.salary < (Select AVG(salary) from employees)
+ORDER BY e.salary DESC
+
+12.
+SELECT e1.first_name, e1.last_name
+FROM EMPLOYEES e1
+WHERE e1.employee_id = ANY(SELECT e1.employee_id
+FROM EMPLOYEES e2
+WHERE e2.department_id = e1.department_id
+AND e2.last_name like '%u%'
+AND e1.employee_id != e2.employee_id)
+
+
