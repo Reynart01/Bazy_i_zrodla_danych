@@ -1,0 +1,14 @@
+1.
+select d.department_name, (
+    SELECT 
+    MAX(e1.salary) as maxx
+    FROM Employees e1
+    WHERE e1.salary NOT IN (SELECT MAX(e2.salary) FROM Employees e2 where e2.department_id = e.department_id)
+    and e1.department_id = e.department_id
+    ) as drugi_zarobki
+from departments d
+join employees e
+on d.department_id = e.department_id
+
+group by  d.department_id, e.department_id, d.department_name
+order by drugi_zarobki desc
