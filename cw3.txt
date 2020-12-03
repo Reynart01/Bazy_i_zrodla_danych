@@ -12,3 +12,94 @@ on d.department_id = e.department_id
 
 group by  d.department_id, e.department_id, d.department_name
 order by drugi_zarobki desc
+
+2.
+  CREATE TABLE MECZ
+   (id NUMBER PRIMARY KEY, 
+	GOSPODARZ VARCHAR2(20 BYTE), 
+	GOSC VARCHAR2(20 BYTE), 
+	GOLE_GOSPODARZA NUMBER, 
+	GOLE_GOSCIA NUMBER
+   );
+   
+   
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('2', 'druzyna1', 'druzyna3', '5', '2');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('3', 'druzyna1', 'druzyna4', '3', '1');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('4', 'druzyna1', 'druzyna5', '0', '3');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('5', 'druzyna2', 'druzyna3', '1', '2');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('6', 'druzyna2', 'druzyna4', '3', '3');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('7', 'druzyna2', 'druzyna5', '8', '3');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('8', 'druzyna5', 'druzyna1', '1', '0');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('9', 'druzyna5', 'druzyna4', '1', '3');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('10', 'druzyna4', 'druzyna3', '1', '1');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('11', 'druzyna3', 'druzyna2', '0', '1');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('12', 'druzyna4', 'druzyna5', '4', '0');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('13', 'druzyna1', 'druzyna3', '2', '2');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('14', 'druzyna1', 'druzyna2', '0', '0');
+
+INSERT INTO
+MECZ(id, GOSPODARZ, GOSC, GOLE_GOSPODARZA, GOLE_GOSCIA)
+VALUES('15', 'druzyna2', 'druzyna3', '3', '5');
+
+
+3.
+
+select druzyna, SUM(punkty) as suma_punktow, SUM(roznica_bramek) as bilans_bramek
+from
+    (select gospodarz as druzyna, 
+        (CASE
+            WHEN gole_gospodarza > gole_goscia THEN 3
+            WHEN gole_gospodarza = gole_goscia THEN 1        
+            ELSE 0
+        END) as punkty,
+        gole_gospodarza - gole_goscia as roznica_bramek
+    from mecz
+    union all
+    select gosc as druzyna,
+     (CASE
+            WHEN gole_gospodarza < gole_goscia THEN 3
+            WHEN gole_gospodarza = gole_goscia THEN 1        
+            ELSE 0
+        END),
+        gole_goscia - gole_gospodarza as roznica_bramek
+    from mecz)
+group by druzyna
+order by suma_punktow desc, bilans_bramek desc
