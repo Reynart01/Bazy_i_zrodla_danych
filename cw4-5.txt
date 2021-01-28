@@ -1,0 +1,92 @@
+CREATE OR REPLACE PROCEDURE ADD_Job(
+    jobid VARCHAR2,
+    jobtitle VARCHAR2
+)
+AS
+BEGIN
+ Insert into jobs
+  values(jobId, jobTitle, 0, 10000);
+
+EXCEPTION
+   WHEN OTHERS THEN RAISE_APPLICATION_ERROR(-20000, 'Something goes wrong');
+END;
+
+
+exec Add_job( 10, 'szef')
+
+
+
+
+create or replace PROCEDURE Change_Title(
+    jobid varchar2,
+    jobtitle VARCHAR2
+)
+AS
+BEGIN
+update jobs
+set job_title= jobtitle
+where job_id = jobid;
+
+
+EXCEPTION
+   WHEN OTHERS THEN RAISE_APPLICATION_ERROR(-20000, 'Something goes wrong');
+END;
+
+
+
+create or replace PROCEDURE Get_salary_by_id(
+    employeeid number  ,
+    last_name_out out varchar,
+    salary_out out number
+)
+AS
+BEGIN
+select last_name, salary
+into
+last_name_out, salary_out
+from employees
+where employee_id = employeeid;
+
+
+
+END;
+
+
+DECLARE 
+last_name_out VARCHAR(25);
+salary_out NUMBER;
+BEGIN
+    Get_salary_by_id(198, last_name_out, salary_out);
+END;
+
+
+
+
+
+CREATE OR REPLACE Function GetJobName
+   ( jobId varchar )
+   RETURN varchar
+is
+jobtitle varchar(25) := '';
+
+BEGIN
+
+select job_title
+into jobtitle
+from jobs
+where job_id = jobId;
+
+RETURN jobtitle;
+
+END;
+
+
+
+DECLARE 
+   title varchar(25); 
+BEGIN 
+   title := getjobname(10); 
+   
+   dbms_output.put_line('Job name: ' || title); 
+END; 
+
